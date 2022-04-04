@@ -1,34 +1,92 @@
 #lang racket
-; TDA Game
+
+; TDA CardsSet
+; Representación computacional de la generación de cartas
+; con sus respectivos símbolos, respetando las restricciones
+; correspondientes del juego Dobble.
+
+; Representación: Listas
+
+(define numeros
+  (list 1 2 3 4 5 6 7 8)
+
+; Elements...
+; (list 1 2 3 4 5 6 7)
+; (list "A" "B" "C" "D" "E" "F" "G")
+; (list "Arból" "Manzana" "Plátano" "Zorro" "Lana" "Cama" "Silla")
+        
+
+; ((Elements) 2 3 randomFn) || ((Elements) 3 7 randomFn)
+; '((1 2 3) (1 4 5) ())
+
+; Función que...
+; Entrada:
+; Salida:
 
 (define cardsSet
-  (lambda (Elements numE maxC rndFn)
+  (lambda (Elements-entrada numE maxC rndFn)
     (+ 1 n)))
 
+; (define baraja
+  ; (cardsSet (Elements) 2 3 randomFn)
+  ; '((1 2) (1 3) (2 3))
+  ; '((1 2 3) (1 4 5) (1 6 7) (2 4 6) (2 5 7) (3 4 7) (3 5 6))
+  
+; (dobble? baraja
+; Verificar que los elementos en una carta sean distintos,
+; y que para cada carta existe un solo elemento en común
+; para cualquier otra carta de la baraja.
+; Crear función que revise toda la lista (recursión)
+
+(define dobble-par?
+  (lambda (carta1 carta2 )
+    (map eq? carta1 carta2)))
+
+; Función que...
+; Entrada:
+; Salida:
 (define dobble?
   (lambda (cardsSet-entrada)
-    (1)))
+    (#t)))
 
+; Función que...
+; Entrada:
+; Salida:
 (define numCards
   (lambda (cardsSet-entrada)
     ))
 
+; Función que...
+; Entrada:
+; Salida:
 (define nthCard
   (lambda (cardsSet-entrada carta-seleccionada)
     (carta)))
 
+; Función que...
+; Entrada:
+; Salida:
 (define findTotalCards
   (lambda (carta-entrada)
     ))
 
+; Función que...
+; Entrada:
+; Salida:
 (define requiredElements
   (lambda (carta-entrada)
     ))
 
+; Función que...
+; Entrada:
+; Salida:
 (define missingCards
   (lambda (cardsSet-entrada)
     (cardsSet-salida)))
 
+; Función que...
+; Entrada:
+; Salida:
 (define cardsSet->string
   (lambda (cardsSet-entrada)
     (cardsSet-string)))
