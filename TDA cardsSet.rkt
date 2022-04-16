@@ -25,7 +25,22 @@
 
 (define cardsSet
   (lambda (Elements-entrada numE maxC rndFn)
-    (+ 1 n)))
+    (define primera-carta
+      (lambda (i)
+        (cond
+          ((> i numE) null)
+          (else (cons i (primera-carta (+ i 1))))
+          )))
+    (agregar-carta-baraja baraja (primera-carta 1))
+    ; --------- crear n cartas siguientes (4)---------
+    (define n-cartas
+      (lambda (i)
+        (cond
+          ((> i numE) null)
+          (else (cons i (primera-carta (+ i 1))))
+          )))
+    ; ------------------------------------------
+    ))
 
 ; (define baraja
   ; (cardsSet (Elements) 2 3 randomFn)
