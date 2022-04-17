@@ -23,6 +23,20 @@
 ; Entrada:
 ; Salida:
 
+(define n-cartas-2
+          (lambda (k j numE)
+            (cond
+          ((= k 1) (cons 1 (n-cartas-2 (+ k 1) j numE)))
+          ((> k numE 1) null)
+          (else (cons (+ (* (- numE 1) j) (+ k 1)) (n-cartas-2 (+ k 1) j numE))))))
+
+(define n-cartas
+      (lambda (j numE)
+        (cond
+          ((> j (- numE 1)) null)
+          (agregar-carta-baraja baraja (n-cartas-2 1 j numE))
+          (else (n-cartas (+ j 1) numE)))))
+
 (define cardsSet
   (lambda (Elements-entrada numE maxC rndFn)
     (define primera-carta
@@ -32,13 +46,15 @@
           (else (cons i (primera-carta (+ i 1))))
           )))
     (agregar-carta-baraja baraja (primera-carta 1))
+
     ; --------- crear n cartas siguientes (4)---------
-    (define n-cartas
-      (lambda (i)
-        (cond
-          ((> i numE) null)
-          (else (cons i (primera-carta (+ i 1))))
-          )))
+
+    (agregar-carta-baraja (agregar-carta-baraja baraja (primera-carta 1)) (n-cartas 1 4))
+    
+    ; (cons 1 (cons 5 (cons 6 null)))
+    ; (cons 1 (cons 7 (cons 8 null)))
+        
+    ; (else (cons 1 (cons 5 (cons 6 null)))) (cons 1 (cons 7 (cons 8 null))))  
     ; ------------------------------------------
     ))
 
