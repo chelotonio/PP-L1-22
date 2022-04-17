@@ -23,34 +23,41 @@
 ; Entrada:
 ; Salida:
 
+(define buscar-elemento
+  (lambda (i n lista)
+    (cond
+      ((null? lista) null)
+      ((eq? i n) (car lista))
+      (else (buscar-elemento (+ i 1) n (cdr lista))))))
+
 (define n2-cartas-2
-          (lambda (k j i numE)
+          (lambda (k j i numE Elements-entrada)
             (cond
-          ((= k 1) (cons (+ i 1) (n2-cartas-2 (+ k 1) j i numE)))
+          ((= k 1) (cons (buscar-elemento 1 (+ i 1) Elements-entrada) (n2-cartas-2 (+ k 1) j i numE Elements-entrada)))
           ((> k numE 1) null)
           (else (cons
-  (+ (+ (* (- numE 1) (- k 2)) (- numE 1) 2) (modulo (- (+ (* (- i 1) (- k 2))  j) 1) (- numE 1)))               
-                 (n2-cartas-2 (+ k 1) j i numE))))))
+  (buscar-elemento 1 (+ (+ (* (- numE 1) (- k 2)) (- numE 1) 2) (modulo (- (+ (* (- i 1) (- k 2))  j) 1) (- numE 1))) Elements-entrada)               
+                 (n2-cartas-2 (+ k 1) j i numE Elements-entrada))))))
 
 (define n2-cartas
-      (lambda (i j numE)
+      (lambda (i j numE Elements-entrada)
         (cond
           ((> i (- numE 1)) baraja)
-          ((> j (- numE 1)) (n2-cartas (+ i 1) 1 numE))
-          (else (agregar-carta-baraja (n2-cartas i (+ j 1) numE) (n2-cartas-2 1 j i numE))))))
+          ((> j (- numE 1)) (n2-cartas (+ i 1) 1 numE Elements-entrada))
+          (else (agregar-carta-baraja (n2-cartas i (+ j 1) numE Elements-entrada) (n2-cartas-2 1 j i numE Elements-entrada))))))
 
 (define n-cartas-2
-          (lambda (k j numE)
+          (lambda (k j numE Elements-entrada)
             (cond
-          ((= k 1) (cons 1 (n-cartas-2 (+ k 1) j numE)))
+          ((= k 1) (cons (buscar-elemento 1 1 Elements-entrada) (n-cartas-2 (+ k 1) j numE Elements-entrada)))
           ((> k numE 1) null)
-          (else (cons (+ (* (- numE 1) j) (+ k 0)) (n-cartas-2 (+ k 1) j numE))))))
+          (else (cons (buscar-elemento 1 (+ (* (- numE 1) j) (+ k 0)) Elements-entrada) (n-cartas-2 (+ k 1) j numE Elements-entrada))))))
 
 (define n-cartas
-      (lambda (j numE)
+      (lambda (j numE Elements-entrada)
         (cond
           ((> j (- numE 1)) baraja)
-          (else (agregar-carta-baraja (n-cartas (+ j 1) numE) (n-cartas-2 1 j numE))))))
+          (else (agregar-carta-baraja (n-cartas (+ j 1) numE Elements-entrada) (n-cartas-2 1 j numE Elements-entrada))))))
 
 (define cardsSet
   (lambda (Elements-entrada numE maxC rndFn)
@@ -58,14 +65,17 @@
       (lambda (i)
         (cond
           ((> i numE) null)
-          (else (cons i (primera-carta (+ i 1))))
+          (else (cons (buscar-elemento 1 i Elements-entrada) (primera-carta (+ i 1))))
           )))
 
-    (append (list (primera-carta 1)) (append (n-cartas 1 numE) (n2-cartas 1 1 numE)))
+    (append (list (primera-carta 1)) (append (n-cartas 1 numE Elements-entrada) (n2-cartas 1 1 numE Elements-entrada)))
     
     ))
 
 ; (define baraja
+(define baraja
+  null)
+  
   ; (cardsSet (Elements) 2 3 randomFn)
   ; '((1 2) (1 3) (2 3))
   ; '((1 2 3) (1 4 5) (1 6 7) (2 4 6) (2 5 7) (3 4 7) (3 5 6))
