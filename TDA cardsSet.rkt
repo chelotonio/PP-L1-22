@@ -20,9 +20,8 @@
 ; '((1 2 3) (1 4 5) ())
 
 ; Función que...
-; Entrada:
-; Salida:
-
+; Dominio:
+; Recorrido:
 (define buscar-elemento
   (lambda (i n lista)
     (cond
@@ -30,6 +29,16 @@
       ((eq? i n) (car lista))
       (else (buscar-elemento (+ i 1) n (cdr lista))))))
 
+(define acotar-cartas
+  (lambda (maxC list i)
+    (cond
+      ((null? list) null)
+      ((> i maxC) null)
+      (else (cons (car list) (acotar-cartas maxC (cdr list) (+ i 1)))))))  
+
+; Función que...
+; Dominio:
+; Recorrido:
 (define n2-cartas-2
           (lambda (k j i numE Elements-entrada)
             (cond
@@ -39,6 +48,9 @@
   (buscar-elemento 1 (+ (+ (* (- numE 1) (- k 2)) (- numE 1) 2) (modulo (- (+ (* (- i 1) (- k 2))  j) 1) (- numE 1))) Elements-entrada)               
                  (n2-cartas-2 (+ k 1) j i numE Elements-entrada))))))
 
+; Función que...
+; Dominio:
+; Recorrido:
 (define n2-cartas
       (lambda (i j numE Elements-entrada)
         (cond
@@ -46,6 +58,9 @@
           ((> j (- numE 1)) (n2-cartas (+ i 1) 1 numE Elements-entrada))
           (else (agregar-carta-baraja (n2-cartas i (+ j 1) numE Elements-entrada) (n2-cartas-2 1 j i numE Elements-entrada))))))
 
+; Función que...
+; Dominio:
+; Recorrido:
 (define n-cartas-2
           (lambda (k j numE Elements-entrada)
             (cond
@@ -53,12 +68,18 @@
           ((> k numE 1) null)
           (else (cons (buscar-elemento 1 (+ (* (- numE 1) j) (+ k 0)) Elements-entrada) (n-cartas-2 (+ k 1) j numE Elements-entrada))))))
 
+; Función que...
+; Dominio:
+; Recorrido:
 (define n-cartas
       (lambda (j numE Elements-entrada)
         (cond
           ((> j (- numE 1)) baraja)
           (else (agregar-carta-baraja (n-cartas (+ j 1) numE Elements-entrada) (n-cartas-2 1 j numE Elements-entrada))))))
 
+; Función que...
+; Dominio:
+; Recorrido:
 (define cardsSet
   (lambda (Elements-entrada numE maxC rndFn)
     (define primera-carta
@@ -68,8 +89,13 @@
           (else (cons (buscar-elemento 1 i Elements-entrada) (primera-carta (+ i 1))))
           )))
 
-    (append (list (primera-carta 1)) (append (n-cartas 1 numE Elements-entrada) (n2-cartas 1 1 numE Elements-entrada)))
-    
+    (define baraja-final
+      (append (list (primera-carta 1)) (append (n-cartas 1 numE Elements-entrada) (n2-cartas 1 1 numE Elements-entrada))))
+
+    (cond
+      ((> maxC 0) (acotar-cartas maxC baraja-final 1))
+      (else baraja-final))
+
     ))
 
 ; (define baraja
