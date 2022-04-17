@@ -23,6 +23,22 @@
 ; Entrada:
 ; Salida:
 
+(define n2-cartas-2
+          (lambda (k j i numE)
+            (cond
+          ((= k 1) (cons (+ i 1) (n2-cartas-2 (+ k 1) j i numE)))
+          ((> k numE 1) null)
+          (else (cons
+  (+ (+ (* (- numE 1) (- k 2)) (- numE 1) 2) (modulo (- (+ (* (- i 1) (- k 2))  j) 1) (- numE 1)))               
+                 (n2-cartas-2 (+ k 1) j i numE))))))
+
+(define n2-cartas
+      (lambda (i j numE)
+        (cond
+          ((> i (- numE 1)) baraja)
+          ((> j (- numE 1)) (n2-cartas (+ i 1) 1 numE))
+          (else (agregar-carta-baraja (n2-cartas i (+ j 1) numE) (n2-cartas-2 1 j i numE))))))
+
 (define n-cartas-2
           (lambda (k j numE)
             (cond
@@ -44,9 +60,9 @@
           ((> i numE) null)
           (else (cons i (primera-carta (+ i 1))))
           )))
-    (agregar-carta-baraja baraja (primera-carta 1))
 
-    (agregar-carta-baraja (agregar-carta-baraja baraja (primera-carta 1)) (n-cartas 1 numE))
+    (append (list (primera-carta 1)) (append (n-cartas 1 numE) (n2-cartas 1 1 numE)))
+    
     ))
 
 ; (define baraja
