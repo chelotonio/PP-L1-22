@@ -28,14 +28,13 @@
             (cond
           ((= k 1) (cons 1 (n-cartas-2 (+ k 1) j numE)))
           ((> k numE 1) null)
-          (else (cons (+ (* (- numE 1) j) (+ k 1)) (n-cartas-2 (+ k 1) j numE))))))
+          (else (cons (+ (* (- numE 1) j) (+ k 0)) (n-cartas-2 (+ k 1) j numE))))))
 
 (define n-cartas
       (lambda (j numE)
         (cond
-          ((> j (- numE 1)) null)
-          (agregar-carta-baraja baraja (n-cartas-2 1 j numE))
-          (else (n-cartas (+ j 1) numE)))))
+          ((> j (- numE 1)) baraja)
+          (else (agregar-carta-baraja (n-cartas (+ j 1) numE) (n-cartas-2 1 j numE))))))
 
 (define cardsSet
   (lambda (Elements-entrada numE maxC rndFn)
@@ -47,15 +46,7 @@
           )))
     (agregar-carta-baraja baraja (primera-carta 1))
 
-    ; --------- crear n cartas siguientes (4)---------
-
-    (agregar-carta-baraja (agregar-carta-baraja baraja (primera-carta 1)) (n-cartas 1 4))
-    
-    ; (cons 1 (cons 5 (cons 6 null)))
-    ; (cons 1 (cons 7 (cons 8 null)))
-        
-    ; (else (cons 1 (cons 5 (cons 6 null)))) (cons 1 (cons 7 (cons 8 null))))  
-    ; ------------------------------------------
+    (agregar-carta-baraja (agregar-carta-baraja baraja (primera-carta 1)) (n-cartas 1 numE))
     ))
 
 ; (define baraja
