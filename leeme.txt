@@ -1,0 +1,5 @@
+# PP-L1-22
+Repositorio que almacena el código requerido para el laboratorio 1 de paradigmas de programación
+
+Como datos importantes de funcionalidad, solo funciona y se ha implementado el TDA cardsSet, donde se genera la 
+baraja de cartas de forma correcta según los parametros indicados.
