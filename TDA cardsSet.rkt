@@ -145,9 +145,9 @@
       ((< 1 (contar-baraja baraja 0)) #f)
       (else #t))))
 
-;
-;
-;
+; Función que permite verificar si el conjunto de cartas en el conjunto corresponden a un conjunto válido.
+; Dominio: cardsSet (list)
+; Recorrido: boolean
 (define dobble?
   (lambda (cardsSet-entrada)
     (cond
@@ -155,19 +155,7 @@
       ((es-par-dobble? (car cardsSet-entrada) (car (cdr cardsSet-entrada))) (dobble? (cdr cardsSet-entrada)))
       (else #f))))
 
-; Función que recorre todas las cartas revisando que cada carta tenga elementos distintos.
-; Dominio: cards (list)
-; Salida: boolean
-;(define diff-elements?
-
-; Función que...
-; Entrada: cardsSet (List)
-; Salida: boolean
-;(define dobble?
-;  (lambda (cardsSet-entrada)
-;    (cond
-;      ((((dobble-par? cardsSet-entrada) and (diff-elements? cardsSet-entrada))) #t)
-;      (else #f))))
+; ______________ TDA CardsSet - numCards ______________
 
 ; Función que...
 ; Entrada:
