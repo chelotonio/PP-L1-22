@@ -157,26 +157,49 @@
 
 ; ______________ TDA CardsSet - numCards ______________
 
-; Función que...
-; Entrada:
-; Salida:
+; Función que permite determinar la cantidad de cartas en el set.
+; Entrada: cardsSet (list)
+; Salida: int
 (define numCards
-  (lambda (cardsSet-entrada)
-    null))
+  (lambda (lista)
+    (define numCards-sin-encapsular
+      (lambda (lista i)
+        (cond
+          ((null? lista) i)
+          (else (numCards-sin-encapsular (cdr lista) (+ i 1))))))
+    (numCards-sin-encapsular lista 0)))
+    
 
-; Función que...
-; Entrada:
-; Salida:
+; ______________ TDA CardsSet - nthCard ______________
+
+; Función que obtiene la n-ésima (nth) carta desde el conjunto de cartas partiendo desde 0 hasta (totalCartas-1).
+; Entrada: cardsSet (list) X (int)  
+; Salida: enésima carta (list)
 (define nthCard
-  (lambda (cardsSet-entrada carta-seleccionada)
-    (null)))
+  (lambda (lista n)
+    (define buscar-elemento
+      (lambda (i n lista)
+        (cond
+          ((null? lista) null)
+          ((eq? i n) (car lista))
+          (else (buscar-elemento (+ i 1) n (cdr lista))))))
+    (buscar-elemento 0 n lista)))
 
-; Función que...
+; ______________ TDA CardsSet - findTotalCards ______________
+
+; Función que a partir de una carta de muestra, determina la cantidad total de cartas que se deben producir para construir un conjunto válido.
 ; Entrada:
 ; Salida:
 (define findTotalCards
   (lambda (carta-entrada)
-    null))
+    (define contar-elementos
+      (lambda (carta-entrada i)
+        (cond
+          ((null? carta-entrada) i)
+          (else (contar-elementos (cdr carta-entrada) (+ i 1))))))
+    (+ 1 (- 1 (contar-elementos carta-entrada 1)) (* (- 1 (contar-elementos carta-entrada 1)) (- 1 (contar-elementos carta-entrada 1))))))
+
+; ______________ TDA CardsSet - requiredElements ______________
 
 ; Función que...
 ; Entrada:
@@ -209,3 +232,18 @@
 ; (dobble? '((1 2 3) (1 4 5) (1 6 7) (2 6 8) (2 7 9) (3 4 9)))
 ; (dobble? '((1 2) (1 3) (1 3))) ... Ejemplo donde coinciden dos cartas con más de un elemento en común.
 ; (dobble? '((1 2) (2 4) (5 6))) ... Ejemplo donde ninguna carta posee un elemento en común.
+
+; Ejemplos de numCards.
+; (numCards (cardsSet '(1 2 3 4 5 6 7 8 9 10 11 12 13) 4 10 0))
+; (numCards (cardsSet '("Arból" "Manzana" "Plátano" "Zorro" "Lana" "Cama" "Silla") 3 10 0))
+; (numCards (cardsSet '("A" "B" "C" "D" "E" "F" "G") 2 10 0))
+
+; Ejemplos de nthCard.
+; (nthCard (cardsSet '(1 2 3 4 5 6 7 8 9 10 11 12 13) 4 10 0) 7)
+; (nthCard (cardsSet '("A" "B" "C" "D" "E" "F" "G") 2 10 0) 2)
+; (nthCard (cardsSet '("Arból" "Manzana" "Plátano" "Zorro" "Lana" "Cama" "Silla") 3 10 0) 0)
+
+; Ejemplo de findTotalCards.
+; (findTotalCards (nthCard (cardsSet '(1 2 3 4 5 6 7 8 9 10 11 12 13) 4 10 0) 7))
+; (findTotalCards (nthCard (cardsSet '("Arból" "Manzana" "Plátano" "Zorro" "Lana" "Cama" "Silla") 3 10 0) 0))
+; (findTotalCards (nthCard (cardsSet '("A" "B" "C" "D" "E" "F" "G") 2 10 0) 2))
