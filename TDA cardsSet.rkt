@@ -188,8 +188,8 @@
 ; ______________ TDA CardsSet - findTotalCards ______________
 
 ; Función que a partir de una carta de muestra, determina la cantidad total de cartas que se deben producir para construir un conjunto válido.
-; Entrada:
-; Salida:
+; Entrada: carta (list)
+; Salida: int
 (define findTotalCards
   (lambda (carta-entrada)
     (define contar-elementos
@@ -201,30 +201,51 @@
 
 ; ______________ TDA CardsSet - requiredElements ______________
 
-; Función que...
-; Entrada:
-; Salida:
+; Función que a partir de una carta de muestra, determina la cantidad total de elementos necesarios para poder construir un conjunto válido.
+; Entrada: carta (list)
+; Salida: int
 (define requiredElements
   (lambda (carta-entrada)
-    null))
+    (define contar-elementos
+      (lambda (carta-entrada i)
+        (cond
+          ((null? carta-entrada) i)
+          (else (contar-elementos (cdr carta-entrada) (+ i 1))))))
+    (contar-elementos carta-entrada 0)))
 
-; Función que...
-; Entrada:
-; Salida:
+; ______________ TDA CardsSet - missingCards ______________
+
+; Función que genera las cartas sobrantes a partir del cardsSet completo.
+(define filtrar-cartas-necesarias
+  (lambda(mazo-completo i n)
+    (cond
+      ((= i n) null)
+      (else (cons (nthCard mazo-completo i) (filtrar-cartas-necesarias mazo-completo (+ i 1) n))))))
+     
+; Función que a partir de un conjunto de cartas retorna el conjunto de cartas que hacen falta para que el set sea válido.
+; Entrada: cardsSet (list)
+; Salida: cardsSet (list)
 (define missingCards
   (lambda (cardsSet-entrada)
-    (null)))
+    (filtrar-cartas-necesarias (cardsSet '(1 2 3 4 5 6 7 8 9 10 11 12 13) (requiredElements (car cardsSet-entrada)) (findTotalCards (car cardsSet-entrada)) 0)
+                               (numCards cardsSet-entrada) (findTotalCards (car cardsSet-entrada)))))
 
-; Función que...
-; Entrada:
-; Salida:
+; ______________ TDA CardsSet - cardsSet->string ______________
+
+; Función que convierte un conjunto de cartas a una representación basada en strings que posteriormente pueda visualizarse a través de la función display.	
+; Entrada: cardsSet (list)
+; Salida: string
 (define cardsSet->string
   (lambda (cardsSet-entrada)
-    (null)))
+    (cond
+      ((null? cardsSet-entrada) null)
+      (else (cons (string-join (car cardsSet-entrada) " ") (cardsSet->string (cdr cardsSet-entrada)))))))
+
+; ______________ TDA CardsSet - EJEMPLOS ______________
 
 ; Ejemplos de CardsSet.
 ; (cardsSet '(1 2 3 4 5 6 7 8 9 10 11 12 13) 4 10 0)
-; (cardsSet '("Arból" "Manzana" "Plátano" "Zorro" "Lana" "Cama" "Silla") 3 10 0)
+; (cardsSet '("Arból" "Manzana" "Plátano" "Zorro" "Lana" "Cama" "Silla") 3 -1 0)
 ; (cardsSet '("A" "B" "C" "D" "E" "F" "G") 2 10 0)
 
 ; Ejemplos de dobble?.
@@ -247,3 +268,19 @@
 ; (findTotalCards (nthCard (cardsSet '(1 2 3 4 5 6 7 8 9 10 11 12 13) 4 10 0) 7))
 ; (findTotalCards (nthCard (cardsSet '("Arból" "Manzana" "Plátano" "Zorro" "Lana" "Cama" "Silla") 3 10 0) 0))
 ; (findTotalCards (nthCard (cardsSet '("A" "B" "C" "D" "E" "F" "G") 2 10 0) 2))
+
+; Ejemplo de requiredElements.
+; (requiredElements (nthCard (cardsSet '("A" "B" "C" "D" "E" "F" "G") 2 10 0) 1))
+; (requiredElements (nthCard (cardsSet '("Arból" "Manzana" "Plátano" "Zorro" "Lana" "Cama" "Silla") 3 10 0) 0))
+; (requiredElements (nthCard (cardsSet '(1 2 3 4 5 6 7 8 9 10 11 12 13) 4 10 0) 4))
+
+; Ejemplo de missingCards.
+; (missingCards (cardsSet '(1 2 3 4 5 6 7) 3 5 0)) ... Se generan 5 cartas, faltan 2.
+; (missingCards (cardsSet '(1 2 3 4 5 6 7 8 9 10 11 12 13) 4 3 0)) ... Se generan 4 cartas, faltan 9.
+; (missingCards (cardsSet '(1 2 3 4 5 6 7) 2 2 0)) .. Se generan 2 cartas, falta 1.
+
+; Ejemplo de cardsSet->string.
+; (cardsSet->string (cardsSet '("Arból" "Manzana" "Plátano" "Zorro" "Lana" "Cama" "Silla") 3 -1 0))
+; (cardsSet->string (cardsSet '("A" "B" "C" "D" "E" "F" "G") 2 3 0))
+; (cardsSet->string (cardsSet '("1" "2" "3" "4" "5" "6" "7") 3 5 0))
+
